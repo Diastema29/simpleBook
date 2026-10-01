@@ -1,0 +1,1412 @@
+{
+  "info": {
+    "_postman_id": "5e455109-0622-44b0-a78f-9bc9e147711b",
+    "name": "simpleBook",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57936661",
+    "_collection_link": "https://go.postman.co/collection/57936661-5e455109-0622-44b0-a78f-9bc9e147711b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "positive",
+      "item": [
+        {
+          "name": "getStatus",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 200\", function (){\r\n pm.response.to.have.status(200)\r\n})\r\n\r\npm.test(\"response body to have property status\", function(){\r\n    pm.expect(responseData).to.have.property(\"status\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property status = OK\", function () {\r\n    pm.expect(responseData.status).to.equal(\"OK\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.status).not.to.null\r\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listOfBooks",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\r\n\r\npm.test(\"response body to be an array\", function (){\r\n    pm.expect(responseData).to.be.an(\"array\")\r\n})\r\n\r\npm.test(\"array variable to have item called type\", function (){\r\n    pm.expect (responseData [0]).to.have.property(\"type\")\r\n})\r\n\r\npm.test (\"Book type to equal fiction\", function (){\r\n    pm.expect(responseData[0].type).to.eql(\"fiction\")\r\n})\r\n\r\npm.test(\"Array items to equal four\", function (){\r\n    pm.expect (responseData).to.have.lengthOf(4)\r\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?type=fiction",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "books"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "fiction"
+                },
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "bookid",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\n\npm.test(\"response body to be an object\", function (){\n    pm.expect(responseData).to.be.an(\"object\")\n})\n\npm.test(\"object variable to have item called available\", function (){\n    pm.expect(responseData).to.have.property(\"timestamp\")\n})\n\npm.test(\"Book order timestamp to equal 1752239490804\", function () {\n    pm.expect(responseData.timestamp).to.equal(1752239490804)\n})\n\npm.test (\"Book order id to equal 2\", function (){\n    pm.expect(responseData.id).to.equal(2)\n})\n\npm.test(\"object items count to equal fourteen\", function (){\n    pm.expect(Object.keys(responseData).length).to.equal(14)\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/:bookId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "books",
+                ":bookId"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "bookId",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "orders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\n\npm.test(\"response body should have property 'createc'\", function (){\n    pm.expect(responseData).to.have.property('created')\n})\n\npm.test(\"response body should have property 'orderId'\", function () {\n    pm.expect(responseData).to.have.property('orderId')})\n\npm.test(\"response body property : created,should equal true\", function (){\n    pm.expect(responseData.created).to.equal(true)\n})\n\npm.test(\"response body property : orderId,should equal expected\", function (){\n    pm.expect(responseData.orderId).to.equal(responseData.orderId)\n})\n\npm.test(\"response body object keys length should equal 2\", function (){\n    pm.expect(Object.keys(responseData)).to.have.lengthOf(2)\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\r\n    \"bookId\": 3,\r\n    \"customerName\": \"John Doe\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "allOrders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 200\", function (){\r\n    pm.response.to.have.status(200)\r\n})\r\n\r\npm.test(\"response body to have property bookId\", function(){\r\n    pm.expect(responseData[0]).to.have.property(\"bookId\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n    pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property bookId = 3\", function () {\r\n    pm.expect(responseData[0].bookId).to.equal(3)\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.status).not.to.null\r\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getOrder",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// const responseData = pm.response.json()\r\n\r\n// pm.test(\"status is 200\", function (){\r\n//     pm.response.to.have.status(200)\r\n// })\r\n\r\n// pm.test(\"response body to have property bookId\", function(){\r\n//     pm.expect(responseData).to.have.property(\"bookId\")\r\n// })\r\n\r\n// pm.test(\"responseTime to be less than 200ms\", function() {\r\n//     pm.expect(pm.response.responseTime).to.below(10000)\r\n// })\r\n\r\n// pm.test(\"response body to have property bookId = 3\", function () {\r\n//     pm.expect(responseData.bookId).to.equal(3)\r\n// })\r\n\r\n// pm.test(\"status not to be null\", function() {\r\n//     pm.expect(responseData).not.to.be.null\r\n// })\r\n\r\n// pm.test(\"response body status not to be null\", function() {\r\n//     pm.expect(responseData.status).not.to.null\r\n// })"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/:orderId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                ":orderId"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "orderId",
+                  "value": "N1wTjp5l4T-6DZ6jU5EDf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "patchOrder",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\r\n\r\npm.test(\"response body to have status 204\", function (){\r\n    pm.response.to.have.status(204)\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(pm.response.code).not.to.be.null\r\n})\r\n\r\npm.test(\"response body not to be null\", function() {\r\n    pm.expect(pm.response.body).not.to.be.null\r\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/:orderId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                ":orderId"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "orderId",
+                  "value": "N1wTjp5l4T-6DZ6jU5EDf"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders/:orderId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                ":orderId"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "orderId",
+                  "value": "ZAhspyTY36FloRzCneaA8"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "authentication",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 409\", function (){\r\n pm.response.to.have.status(409)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = API client already registered. Try a different email.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"API client already registered. Try a different email.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.status).not.to.null\r\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"clientName\": \"abjtest\",\r\n   \"clientEmail\": \"abjapi@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api-clients/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api-clients",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "non-fiction",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "negative",
+      "item": [
+        {
+          "name": "getStatus",
+          "item": [
+            {
+              "name": "invalidEndpoint",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status code is 200\", function (){\r\n    pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n    pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = The resource could not be found. Check your endpoint and request method.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"The resource could not be found. Check your endpoint and request method.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/statu",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "statu"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidHttpMethod",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "listOfBooks",
+          "item": [
+            {
+              "name": "invalidEndpoint",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = The resource could not be found. Check your endpoint and request method.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"The resource could not be found. Check your endpoint and request method.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/book",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "book"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidParams",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(400)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = Invalid value for query parameter 'limit'. Cannot be greater than 20.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"Invalid value for query parameter 'limit'. Cannot be greater than 20.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/books?limit=40",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "books"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "fiction",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "40"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidMethod",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = The resource could not be found. Check your endpoint and request method.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"The resource could not be found. Check your endpoint and request method.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/books",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "books"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "bookId",
+          "item": [
+            {
+              "name": "invalidBookId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No book with id 9\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No book with id 9\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/books/:bookId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "books",
+                    ":bookId"
+                  ],
+                  "query": [
+                    {
+                      "key": "bookId",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "bookId",
+                      "value": "9"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidRequestMethod",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = The resource could not be found. Check your endpoint and request method.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"The resource could not be found. Check your endpoint and request method.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/books/:bookId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "books",
+                    ":bookId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "bookId",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "orders",
+          "item": [
+            {
+              "name": "invalidHttpMethod",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "HEAD",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId?limit=2&type=non-fiction",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "ZAhspyTY36FloRzCneaA8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidToken",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "tokem",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId?limit=2&type=non-fiction",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "ZAhspyTY36FloRzCneaA8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "allOrders",
+          "item": [
+            {
+              "name": "invalidToken",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 401\", function (){\r\n pm.response.to.have.status(401)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = TInvalid bearer token.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"Invalid bearer token.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "head",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "getOrder",
+          "item": [
+            {
+              "name": "wrongOrderId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 401\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id ZAhspyTY36FloRzCneaA8.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id ZAhspyTY36FloRzCneaA8.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "ZAhspyTY36FloRzCneaA8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "patchOrder",
+          "item": [
+            {
+              "name": "noAuthorizationToken",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 401\", function (){\r\n pm.response.to.have.status(401)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = Missing Authorization header.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"Missing Authorization header.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "gQFt8Bz1DnyupJ1RIAR0e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "emptyBody",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id gQFt8Bz1DnyupJ1RIAR0e.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id gQFt8Bz1DnyupJ1RIAR0e.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n//{\r\n // \"customerName\": \"John muller\"\r\n\r\n//}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "gQFt8Bz1DnyupJ1RIAR0e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "wrongOrderId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id ZAhspyTY36FloRzCneaA8.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id ZAhspyTY36FloRzCneaA8.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "ZAhspyTY36FloRzCneaA8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "invalidJsonSyntax",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id gQFt8Bz1DnyupJ1RIAR0e.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id gQFt8Bz1DnyupJ1RIAR0e.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "gQFt8Bz1DnyupJ1RIAR0e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "item": [
+            {
+              "name": "noToken",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 401\", function (){\r\n pm.response.to.have.status(401)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = Missing Authorization header.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"Missing Authorization header.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "gQFt8Bz1DnyupJ1RIAR0e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "wrongOrderId",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id ZAhspyTY36FloRzCneaA8.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id ZAhspyTY36FloRzCneaA8.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "ZAhspyTY36FloRzCneaA8"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const responseData = pm.response.json()\r\n\r\npm.test(\"status is 404\", function (){\r\n pm.response.to.have.status(404)\r\n})\r\n\r\npm.test(\"response body to have property error\", function(){\r\n    pm.expect(responseData).to.have.property(\"error\")\r\n})\r\n\r\npm.test(\"responseTime to be less than 200ms\", function() {\r\n pm.expect(pm.response.responseTime).to.below(10000)\r\n})\r\n\r\npm.test(\"response body to have property error = No order with id gQFt8Bz1DnyupJ1RIAR0e.\", function () {\r\n    pm.expect(responseData.error).to.equal(\"No order with id gQFt8Bz1DnyupJ1RIAR0e.\")\r\n})\r\n\r\npm.test(\"status not to be null\", function() {\r\n    pm.expect(responseData).not.to.be.null\r\n})\r\n\r\npm.test(\"response body status not to be null\", function() {\r\n    pm.expect(responseData.error).not.to.null\r\n})"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"customerName\": \"John muller\"\r\n\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:orderId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":orderId"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "non-fiction",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "orderId",
+                      "value": "gQFt8Bz1DnyupJ1RIAR0e"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
